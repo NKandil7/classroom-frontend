@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm } from "@refinedev/react-hook-form";
 import { classSchema } from "@/lib/shema";
 import * as z from "zod";
 import {
@@ -88,7 +88,7 @@ const Create = () => {
   ]
 
   const bannerPublicId = form.watch("bannerCldPubId");
-  const setBannerImage = (file, field) => {
+  const setBannerImage = (file: any, field: any) => {
     if(file){
       field.onChange(file.url);
       form.setValue('bannerCldPubId', file.publicId, {
@@ -137,12 +137,12 @@ const Create = () => {
                       <FormControl>
                         <UploadWidget 
                           value={field.value ? { url: field.value, publicId: bannerPublicId ?? ''} : null}
-                          onChange={(file: any, field: any) => setBannerImage(file, field)}
+                          onChange={(file: any) => setBannerImage(file, field)}
                         />
                       </FormControl>
                       <FormMessage />
                       {errors.bannerCldPubId && !errors.bannerUrl && (
-                        <p className="text-destructive text-sm">{errors.bannerCldPubId.message ?.toString}</p>
+                        <p className="text-destructive text-sm">{errors.bannerCldPubId.message ?.toString()}</p>
                       )}
                     </FormItem>
                   )}
