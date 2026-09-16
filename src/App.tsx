@@ -90,17 +90,21 @@ function App() {
                     <Route path="create" element={<ClassesCreate />} />
                   </Route>
                 </Route>
-              </Routes>
-              <Toaster />
-              <RefineKbar />
-              <UnsavedChangesNotifier />
-              <DocumentTitleHandler />
-            </Refine>
-            <DevtoolsPanel />
-          </DevtoolsProvider>
-        </ThemeProvider>
-      </RefineKbarProvider>
-    </BrowserRouter>
+                <Route path="/classes" >
+                  <Route index element={<ClassesList />} />
+                  <Route path="create" element={<ClassesCreate />} />
+                </Route>
+            </Routes>
+            <Toaster />
+            <RefineKbar />
+            <UnsavedChangesNotifier />
+            <DocumentTitleHandler />
+          </Refine>
+          <DevtoolsPanel />
+        </DevtoolsProvider>
+      </ThemeProvider>
+    </RefineKbarProvider>
+    </BrowserRouter >
   );
 }
 
