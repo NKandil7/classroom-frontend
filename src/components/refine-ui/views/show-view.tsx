@@ -28,6 +28,7 @@ export function ShowView({ children, className }: ShowViewProps) {
 type ShowViewHeaderProps = PropsWithChildren<{
   resource?: string;
   title?: string;
+  onBack?: () => void;
   wrapperClassName?: string;
   headerClassName?: string;
 }>;
@@ -35,6 +36,7 @@ type ShowViewHeaderProps = PropsWithChildren<{
 export const ShowViewHeader = ({
   resource: resourceFromProps,
   title: titleFromProps,
+  onBack,
   wrapperClassName,
   headerClassName,
 }: ShowViewHeaderProps) => {
@@ -75,7 +77,7 @@ export const ShowViewHeader = ({
         )}
       >
         <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" onClick={back}>
+          <Button variant="ghost" size="icon" onClick={onBack ?? back}>
             <ArrowLeftIcon className="h-4 w-4" />
           </Button>
           <h2 className="text-2xl font-bold">{title}</h2>

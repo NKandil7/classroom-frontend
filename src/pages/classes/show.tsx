@@ -5,16 +5,18 @@ import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { ClassDetails } from '@/types';
 import { useShow } from '@refinedev/core';
+import { useNavigate } from 'react-router';
 import {AdvancedImage} from '@cloudinary/react';
 import { bannerPhoto } from '@/lib/cloudinary';
 const Show = () => {
+  const navigate = useNavigate();
   const { query } = useShow<ClassDetails>({ resource: "classes" });
   const classDetails = query.data?.data;
   const { isLoading, isError } = query;
   if (isLoading || isError || !classDetails) {
     return (
       <ShowView className="class-view class-show">
-        <ShowViewHeader resource='classes' title='Class Details' />
+        <ShowViewHeader resource='classes' title='Class Details' onBack={() => navigate('/classes')} />
         <p className='state-message'>
           {isLoading ? 'Loading class details...'
             : isError ? 'Failed to load class details...'
@@ -30,15 +32,34 @@ const Show = () => {
     .slice(0, 2)
     .map((part) => part[0]?.toUpperCase())
     .join('')
-  const placeholderUrl = `https://placehold.co/600x400?text=${encodeURIComponent(teacherInitials || 'NA')}`;
+  const placeholderUrl = `https://placehold.co/600x400?text=${encodeURIComponent(teacherInitials || "NA")}`;
 
   const { id, name, description, status, capacity, courseCode, courseName, bannerUrl, bannerCldPubId, subject, teacher, department, schedules, inviteCode } = classDetails;
 
   return (
-    <ShowView className='class-view class-show'>
-      <ShowViewHeader resource='classes' title='Class Details' />
-      <div className='banner'>
-        {bannerUrl ? (<AdvancedImage alt='Class Banner' cldImg={bannerPhoto(bannerCldPubId ?? '', name)}/>): <div className='placeholder' />}
+    <ShowView className='class-view class-show space-y-6'>
+      <ShowViewHeader resource='classes' title='Class Details' onBack={() => navigate('/classes')} />
+      <div className="banner">
+        {classDetails.bannerUrl ? (
+          classDetails.bannerUrl.includes("res.cloudinary.com") &&
+          classDetails.bannerCldPubId ? (
+            <AdvancedImage
+              cldImg={bannerPhoto(
+                classDetails.bannerCldPubId ?? "",
+                classDetails.name
+              )}
+              alt="Class Banner"
+            />
+          ) : (
+            <img
+              src={classDetails.bannerUrl}
+              alt={classDetails.name}
+              loading="lazy"
+            />
+          )
+        ) : (
+          <div className="placeholder" />
+        )}
       </div>
       <Card className='details-card'>
         <div className='details-header'>
